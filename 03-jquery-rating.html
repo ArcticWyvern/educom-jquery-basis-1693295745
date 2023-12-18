@@ -5,18 +5,12 @@
     <script src="js/jquery.js"></script>
     <script>
         $(document).ready( function() {
-
-            let totalRating = 0
             let count = 0
-
+            let totalrate = 0
+            let average = 0.0
             $(".star").click( function() {
                 const value = $(this).attr('data-value')
-
-                count++
-                totalRating += parseInt(value)
-                average = totalRating / count
-
-                console.log(`Ratings count: ${count}, avg rating: ${average.toFixed(1)}`)
+                //console.log(`Ratings count: ${count}, avg rating: ${average.toFixed(1)}`)
 
                 ///clear all previous stars
                 $(".star").removeClass('red')
@@ -34,14 +28,14 @@
                     method: "POST",
                     data: { rating: value },
                     success: function(result) {
+                        count++
+                        totalrate += result.rating
+                        average = totalrate / count                        
                         $("#text_p").fadeOut(function () {
-                            $("#text_p").text(`Rating: ` + value + ` , average rating:` + average.toFixed(1)).fadeIn();
+                           $("#text_p").text(`Rating: ` + result.rating + ` , average rating:` + average.toFixed(1)).fadeIn();
                         })
-                        
                     }
-                })
-                
-                
+                })  
             })
         })
          
@@ -54,7 +48,6 @@
     <span class="star" data-value="3">*</span>
     <span class="star" data-value="4">*</span>
     <span class="star" data-value="5">*</span>
-
     <br>
     <div id="text">
         <p id="text_p">Rating:  , average rating: </p>
